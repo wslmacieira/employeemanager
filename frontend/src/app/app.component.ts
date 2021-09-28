@@ -12,7 +12,9 @@ import { NgForm } from '@angular/forms';
 })
 export class AppComponent implements OnInit{
   public employees: Employee[] = [];
+  public setEmployees: Employee[] = [];
   public editEmployee!: Employee;
+  public deleteEmployee!: Employee;
 
   constructor(private employeeService: EmployeeService) {}
 
@@ -24,6 +26,7 @@ export class AppComponent implements OnInit{
     this.employeeService.getEmployees().subscribe(
       (response: Employee[]) => {
         this.employees = response;
+        this.setEmployees = this.employees;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -35,7 +38,6 @@ export class AppComponent implements OnInit{
     document.getElementById('add-employee-form')?.click();
     this.employeeService.addEmployee(addForm.value).subscribe(
       (response: Employee) => {
-        console.log(response);
         this.getEmployees();
       },
       (error: HttpErrorResponse) => {
@@ -48,13 +50,35 @@ export class AppComponent implements OnInit{
     document.getElementById('add-employee-form')?.click();
     this.employeeService.updateEmployee(employee).subscribe(
       (response: Employee) => {
-        console.log(response);
         this.getEmployees();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
       }
     );
+  }
+
+  public onDeleteEmployee(employeeId: number): void {
+    document.getElementById('add-employee-form')?.click();
+    this.employeeService.deleteEmployee(employeeId).subscribe(
+      (response: void) => {
+        this.getEmployees();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  public searchEmployees(key: string): void {
+    const filterEmployees = this.setEmployees.filter((result: Employee) => {
+      return !result.name.toLowerCase().indexOf(key.toLocaleLowerCase())
+        || !result.email.toLowerCase().indexOf(key.toLocaleLowerCase())
+        || !result.phone.toLowerCase().indexOf(key.toLocaleLowerCase())
+        || !result.jobTitle.toLowerCase().indexOf(key.toLocaleLowerCase())
+    })
+
+    this.employees = filterEmployees;
   }
 
 
@@ -72,6 +96,7 @@ export class AppComponent implements OnInit{
       button.setAttribute('data-target', '#updateEmployeeModal');
     }
     if (mode === 'delete') {
+      this.deleteEmployee = employee!;
       button.setAttribute('data-target', '#deleteEmployeeModal');
     }
 

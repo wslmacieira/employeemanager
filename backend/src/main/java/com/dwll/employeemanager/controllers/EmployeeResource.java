@@ -2,19 +2,12 @@ package com.dwll.employeemanager.controllers;
 
 import java.util.List;
 
-import com.dwll.employeemanager.model.Employee;
-import com.dwll.employeemanager.service.EmployeeService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import com.dwll.employeemanager.model.Employee;
+import com.dwll.employeemanager.service.EmployeeService;
 
 @RestController
 @RequestMapping("/employee")
@@ -50,9 +43,9 @@ public class EmployeeResource {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id) {
+    public ResponseEntity<Employee> deleteEmployee(@PathVariable("id") Long id) {
         employeeService.deleteEmployee(id);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

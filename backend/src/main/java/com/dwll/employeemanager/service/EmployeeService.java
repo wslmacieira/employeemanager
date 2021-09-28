@@ -3,6 +3,7 @@ package com.dwll.employeemanager.service;
 import java.util.UUID;
 import java.util.List;
 
+import com.dwll.employeemanager.exception.UserNotFoundException;
 import com.dwll.employeemanager.model.Employee;
 import com.dwll.employeemanager.repo.EmployeeRepo;
 
